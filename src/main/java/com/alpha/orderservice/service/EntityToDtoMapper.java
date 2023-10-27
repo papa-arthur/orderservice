@@ -6,8 +6,10 @@ import com.alpha.orderservice.dto.UserDto;
 import com.alpha.orderservice.entity.Order;
 import com.alpha.orderservice.entity.Product;
 import com.alpha.orderservice.entity.User;
-import com.alpha.orderservice.input.UserInput;
+import com.alpha.orderservice.input.UpdateProductInput;
+import com.alpha.orderservice.input.UpdateUserInput;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
@@ -17,10 +19,17 @@ import java.util.List;
 public interface EntityToDtoMapper {
 
     UserDto entityToDto(User user);
+
     ProductDto entityToDto(Product product);
+
     OrderDto entityToDto(Order order);
 
-    List<UserDto> entityToDto(List<User> allUsers);
+    List<UserDto> entityToUserDtoList(List<User> allUsers);
 
-    void updateFields(@MappingTarget User dbUser, UserInput updateUser);
+    List<ProductDto> entityToProductDtoList(List<Product> allProducts);
+
+    @Mapping(target = "password", ignore = true)
+    void updateFields(@MappingTarget User dbUser, UpdateUserInput updateUser);
+
+    void updateFields(@MappingTarget Product dbProduct, UpdateProductInput updateNewProductInput);
 }
