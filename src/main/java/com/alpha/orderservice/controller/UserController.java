@@ -1,7 +1,8 @@
 package com.alpha.orderservice.controller;
 
 import com.alpha.orderservice.dto.UserDto;
-import com.alpha.orderservice.input.UserInput;
+import com.alpha.orderservice.input.UpdateUserInput;
+import com.alpha.orderservice.input.NewUserInput;
 import com.alpha.orderservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -17,12 +18,12 @@ public class UserController {
     private final UserService userService;
 
     @MutationMapping
-    UserDto createUser(@Argument UserInput user) {
+    UserDto createUser(@Argument NewUserInput user) {
         return userService.createUser(user);
     }
 
     @MutationMapping
-    UserDto updateUser(@Argument UserInput user, @Argument(name = "userId") long userId) {
+    UserDto updateUser(@Argument UpdateUserInput user, @Argument(name = "userId") long userId) {
         return userService.updateUser(user, userId);
     }
 

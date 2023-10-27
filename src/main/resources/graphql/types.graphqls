@@ -1,6 +1,8 @@
 type Query{
-    users:[UserDto]
+    users:[UserDto]!
     getUserById(id:ID!):UserDto
+    products:[ProductDto]!
+    getProductById(id:ID!):ProductDto
 
 }
 
@@ -8,9 +10,46 @@ type Query{
 type Mutation {
 
     createUser(user: UserInput!): UserDto!
-    updateUser(user: UserInput!,userId:ID!): UserDto!
-    deleteUser(userId:ID!): String!
+    updateUser(user: UpdateUserInput!,userId:ID!): UserDto
+    deleteUser(userId:ID!): String
 
+    createProduct(product: NewProductInput!): ProductDto!
+    updateProduct(product: UpdateProductInput!, productId: ID): ProductDto
+    deleteProduct(productId:ID!): String
+
+}
+
+
+input NewProductInput{
+    name: String!
+    stock: Int!
+    price: Float!
+
+}
+input UpdateProductInput{
+    name: String
+    stock: Int
+    price: Float
+
+}
+type ProductDto {
+    id:ID
+    name: String
+    stock: Int
+    price: Float
+}
+
+input UserInput {
+    name: String!
+    email: String!
+    password: String!
+    role: UserRole!
+
+}
+input UpdateUserInput {
+    name: String
+    email: String
+    password: String
 }
 
 type UserDto{
@@ -20,14 +59,8 @@ type UserDto{
     role: UserRole
     orders: [UserDto]
 }
-input UserInput {
-    name: String!
-    email: String!
-    password: String!
-    role: UserRole!
-
-}
 enum UserRole{
     ADMIN
     USER
 }
+

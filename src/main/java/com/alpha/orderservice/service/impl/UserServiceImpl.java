@@ -3,7 +3,8 @@ package com.alpha.orderservice.service.impl;
 import com.alpha.orderservice.dto.UserDto;
 import com.alpha.orderservice.entity.User;
 import com.alpha.orderservice.exception.UserNotFoundException;
-import com.alpha.orderservice.input.UserInput;
+import com.alpha.orderservice.input.UpdateUserInput;
+import com.alpha.orderservice.input.NewUserInput;
 import com.alpha.orderservice.repository.UserRepository;
 import com.alpha.orderservice.service.EntityToDtoMapper;
 import com.alpha.orderservice.service.UserService;
@@ -12,19 +13,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final EntityToDtoMapper mapper;
     private final PasswordEncoder passwordEncoder;
+
     @Override
-    public UserDto createUser(UserInput userInput) {
+    public UserDto createUser(NewUserInput newUserInput) {
         User user = User.builder()
-                .name(userInput.getName())
-                .email(userInput.getEmail())
-                .password(passwordEncoder.encode(userInput.getPassword()))
-                .role(userInput.getRole())
+                .name(newUserInput.getName())
+                .email(newUserInput.getEmail())
+                .password(passwordEncoder.encode(newUserInput.getPassword()))
+                .role(newUserInput.getRole())
                 .build();
 
         return mapper.entityToDto(userRepository.save(user));
@@ -33,23 +36,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                ()->new UserNotFoundException(String.format("User with id '%s' does not exist", userId))
+                () -> new UserNotFoundException(String.format("User with id '%s' does not exist", userId))
         );
         return mapper.entityToDto(user);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return mapper.entityToDto(userRepository.findAll());
+        return mapper.entityToUserDtoList(userRepository.findAll());
     }
 
     @Override
-    public UserDto updateUser(UserInput updateUser, long userId) {
+    public UserDto updateUser(UpdateUserInput updateUser, long userId) {
         User dbUser = userRepository.findById(userId).orElseThrow(
-                ()->new UserNotFoundException(String.format("User with id '%s' does not exist", userId))
+                () -> new UserNotFoundException(String.format("User with id '%d' does not exist", userId))
         );
         mapper.updateFields(dbUser, updateUser);
-        if (updateUser.getPassword() != null){
+        if (updateUser.getPassword() != null) {
             dbUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         }
         return mapper.entityToDto(userRepository.save(dbUser));
@@ -57,10 +60,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteUser(long userId) {
-         if (userRepository.existsById(userId)){
-             userRepository.deleteById(userId);
-             return String.format("User with id '%s' deleted successfully", userId);
-         }
-         throw new UserNotFoundException(String.format("User with id '%s' does not exist", userId));
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+            return String.format("User with id '%s' deleted successfully", userId);
+        }
+        throw new UserNotFoundException(String.format(" Deletion failed! User with id '%d' does not exist", userId));
     }
 }

@@ -4,7 +4,7 @@ import com.alpha.orderservice.entity.UserRole;
 import lombok.Data;
 
 @Data
-public class UserInput {
+public class NewUserInput {
     private String name;
     private String email;
     private String password;
