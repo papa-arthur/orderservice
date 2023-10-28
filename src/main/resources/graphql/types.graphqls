@@ -3,6 +3,10 @@ type Query{
     getUserById(id:ID!):UserDto
     products:[ProductDto]!
     getProductById(id:ID!):ProductDto
+    orders:[OrderDto]!
+    getOrderById(orderId:ID!):OrderDto
+    getOrdersForUser(userId:ID!):[OrderDto]
+    getProductsForOrder(orderId:ID!):[ProductDto]
 
 }
 
@@ -17,9 +21,21 @@ type Mutation {
     updateProduct(product: UpdateProductInput!, productId: ID): ProductDto
     deleteProduct(productId:ID!): String
 
+    createOrder(order: NewOrderInput!): OrderDto
+    updateOrder(order: UpdateOrderInput!): OrderDto
+    deleteOrder(orderId: ID!): String
+
 }
 
-
+input UpdateOrderInput{
+    orderId:ID!
+    products:[UpdateProductLineInput]!
+}
+input UpdateProductLineInput{
+    id:ID
+    productId:ID!
+    quantity:Int!
+}
 input NewProductInput{
     name: String!
     stock: Int!
@@ -62,5 +78,25 @@ type UserDto{
 enum UserRole{
     ADMIN
     USER
+}
+
+input NewOrderInput{
+    userId: ID!
+    productLines: [NewProductLineInput]!
+}
+
+input NewProductLineInput{
+    productId: ID!
+    quantity: Int!
+}
+type OrderDto{
+    id: ID
+    products: [ProductLineDto]
+    user: Int
+}
+
+type ProductLineDto{
+    productId: ID
+    quantity: Int
 }
 

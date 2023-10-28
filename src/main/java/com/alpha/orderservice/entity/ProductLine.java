@@ -1,9 +1,7 @@
 package com.alpha.orderservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -14,9 +12,14 @@ import lombok.*;
 @Entity
 public class ProductLine {
     @Id
-    private Long productId;
-    private Long quantity;
+    @GeneratedValue(strategy = GenerationType.AUTO )
+    private Long id;
     @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+    private int quantity;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     @JoinColumn(name="orderId")
     private Order order;
 }

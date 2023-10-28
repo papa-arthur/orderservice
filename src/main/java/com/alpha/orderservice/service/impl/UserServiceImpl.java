@@ -2,9 +2,10 @@ package com.alpha.orderservice.service.impl;
 
 import com.alpha.orderservice.dto.UserDto;
 import com.alpha.orderservice.entity.User;
+import com.alpha.orderservice.exception.UserExistsException;
 import com.alpha.orderservice.exception.UserNotFoundException;
-import com.alpha.orderservice.input.UpdateUserInput;
 import com.alpha.orderservice.input.NewUserInput;
+import com.alpha.orderservice.input.UpdateUserInput;
 import com.alpha.orderservice.repository.UserRepository;
 import com.alpha.orderservice.service.EntityToDtoMapper;
 import com.alpha.orderservice.service.UserService;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(NewUserInput newUserInput) {
+        if (userRepository.existsByEmail(newUserInput.getEmail())) {
+            throw new UserExistsException(String.format("A user with email: '%s' already exists", newUserInput.getEmail()));
+        }
         User user = User.builder()
                 .name(newUserInput.getName())
                 .email(newUserInput.getEmail())
@@ -36,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException(String.format("User with id '%s' does not exist", userId))
+                () -> new UserNotFoundException(String.format("User with id '%d' does not exist", userId))
         );
         return mapper.entityToDto(user);
     }

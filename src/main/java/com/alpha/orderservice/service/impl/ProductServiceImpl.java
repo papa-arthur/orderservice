@@ -58,4 +58,5 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(String.format("Product with id: %d not found", productId)));
         return mapper.entityToDto(dbProduct);
     }
+
 }

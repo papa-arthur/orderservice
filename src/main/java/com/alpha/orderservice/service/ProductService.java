@@ -14,4 +14,5 @@ public interface ProductService {
     List<ProductDto> getAllProducts();
 
     ProductDto getProductById(long productId);
+
 }
