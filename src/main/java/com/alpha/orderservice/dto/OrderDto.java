@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 public class OrderDto {
     private Long id;
-    private List<ProductLine> products;
+    private List<ProductLineDto> products;
     private UserDto user;
 }

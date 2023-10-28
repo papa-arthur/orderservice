@@ -1,12 +1,10 @@
 package com.alpha.orderservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +19,6 @@ public class Product {
     private String name;
     private int stock;
     private double price;
+    @OneToMany(mappedBy = "product")
+    private List<ProductLine> products;
 }

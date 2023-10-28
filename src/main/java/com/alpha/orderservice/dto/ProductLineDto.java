@@ -7,5 +7,4 @@ import lombok.Data;
 public class ProductLineDto {
     private Long productId;
     private Long quantity;
-    private Order order;
 }

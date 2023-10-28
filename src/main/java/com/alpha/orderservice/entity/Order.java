@@ -1,5 +1,6 @@
 package com.alpha.orderservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,11 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "\"order\"")
+@ToString
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<ProductLine> products;
     @ManyToOne
     @JoinColumn(name = "user_id")
