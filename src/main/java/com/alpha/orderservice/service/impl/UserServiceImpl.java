@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(newUserInput.getEmail())) {
             throw new UserExistsException(String.format("A user with email: '%s' already exists", newUserInput.getEmail()));
         }
+
         User user = User.builder()
                 .name(newUserInput.getName())
                 .email(newUserInput.getEmail())

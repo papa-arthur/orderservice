@@ -24,7 +24,17 @@ type Mutation {
     createOrder(order: NewOrderInput!): OrderDto
     updateOrder(order: UpdateOrderInput!): OrderDto
     deleteOrder(orderId: ID!): String
+    login(loginInput:LoginInput!):LoginResponse
 
+}
+
+input LoginInput{
+    email: String!
+    password: String!
+}
+
+type LoginResponse{
+    token:String
 }
 
 input UpdateOrderInput{
@@ -96,6 +106,7 @@ type OrderDto{
 }
 
 type ProductLineDto{
+    id: ID
     productId: ID
     quantity: Int
 }

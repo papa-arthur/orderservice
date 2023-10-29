@@ -132,8 +132,6 @@ public class OrderServiceImpl implements OrderService {
                     dbProductLine.setQuantity(dbProductLine.getQuantity() - newQuantity);
                     product.setStock(product.getStock() + newQuantity);
 
-                } else {
-                    throw new IllegalArgumentException("Update failed! Quantity must be at least 1");
                 }
                 productLinesUpdates.add(dbProductLine);
 
