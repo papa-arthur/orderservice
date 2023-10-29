@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ProductLineDto {
+    private long id;
     private Long productId;
     private Long quantity;
 }
