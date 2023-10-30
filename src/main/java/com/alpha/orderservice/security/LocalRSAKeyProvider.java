@@ -12,7 +12,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @Component
 public class LocalRSAKeyProvider implements RSAKeyProvider{
 

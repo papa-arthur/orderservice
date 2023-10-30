@@ -2,6 +2,7 @@ package com.alpha.orderservice.service.impl;
 
 import com.alpha.orderservice.dto.OrderDto;
 import com.alpha.orderservice.dto.ProductDto;
+import com.alpha.orderservice.dto.ProductLineDto;
 import com.alpha.orderservice.entity.Order;
 import com.alpha.orderservice.entity.Product;
 import com.alpha.orderservice.entity.ProductLine;
@@ -49,15 +50,14 @@ public class OrderServiceImpl implements OrderService {
         List<ProductLine> productLines = newOrderInput.getProductLines().stream()
                 .map(productLineInput -> {
                     Product dbProduct = productRepository.findById(productLineInput.getProductId())
-                            .orElseThrow(() -> new ProductNotFoundException(
-                                    String.format("Failed to create order! Product with id: %d could not be not found", productLineInput.getProductId())));
+                            .orElseThrow(() -> new ProductNotFoundException(String.format("Failed to create order! Product with id: %d could not be not found", productLineInput.getProductId())));
 
                     if (productLineInput.getQuantity() < 1)
                         throw new IllegalArgumentException("Failed to create order! Product quantity must not be at least 1");
 
                     if (dbProduct.getStock() < productLineInput.getQuantity())
                         throw new InsufficientStockException(String.format("Failed to create order! Product with id: '%d' does not have enough stock. " +
-                                "\n Available stock: %d", productLineInput.getProductId(), dbProduct.getStock()));
+                                " Available stock: %d", productLineInput.getProductId(), dbProduct.getStock()));
 
                     dbProduct.setStock(dbProduct.getStock() - productLineInput.getQuantity());
 
@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
                 })
                 .toList();
 
-        newOrder.setProducts(productLines);
+        newOrder.setProductLines(productLines);
         Order savedOrder = orderRepository.save(newOrder);
         return mapper.entityToDto(savedOrder);
     }
@@ -84,7 +84,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getOrdersForUser(long userId) {
-        //TODO: implement logic to get orders for a user
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException(String.format("User with id '%d' could not be found", userId))
         );
@@ -98,14 +97,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<ProductDto> getProductsForOrder(@Argument(name = "orderId") long orderId) {
+    public List<ProductLineDto> getProductsForOrder(@Argument(name = "orderId") long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new OrderNotFoundException(String.format("Order with id: %d could not be found", orderId)));
-        var products = order.getProducts().stream().map(ProductLine::getProduct).toList();
-        return mapper.entityToProductDtoList(products);
+        return mapper.entityToProductLineDtoList(order.getProductLines());
     }
 
     @Override
+    @Transactional
     public OrderDto updateOrder(UpdateOrderInput orderUpdateInput) {
 
         Order order = orderRepository.findById(orderUpdateInput.getOrderId()).orElseThrow(
@@ -113,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
 
         List<ProductLine> productLinesUpdates = new ArrayList<>();
 
-        for (var input : orderUpdateInput.getProducts()) {
+        for (var input : orderUpdateInput.getProductLines()) {
 
             if (input.getId() > 0) {
                 ProductLine dbProductLine = productLineRepository.findById(input.getId()).orElseThrow(
@@ -133,7 +132,10 @@ public class OrderServiceImpl implements OrderService {
                     product.setStock(product.getStock() + newQuantity);
 
                 }
-                productLinesUpdates.add(dbProductLine);
+
+                var updatedProductLine =productLineRepository.save(dbProductLine);
+
+                productLinesUpdates.add(updatedProductLine);
 
             } else if (input.getId() == 0) {
                 Product dbProduct = productRepository.findById(input.getProductId())
@@ -152,11 +154,10 @@ public class OrderServiceImpl implements OrderService {
                         .order(order)
                         .product(dbProduct).build();
                 productLinesUpdates.add(newProductLine);
-
             }
         }
 
-        order.setProducts(productLinesUpdates);
+        order.setProductLines(productLinesUpdates);
         return mapper.entityToDto(orderRepository.save(order));
     }
 

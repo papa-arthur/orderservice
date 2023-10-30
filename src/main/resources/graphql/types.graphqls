@@ -6,19 +6,19 @@ type Query{
     orders:[OrderDto]!
     getOrderById(orderId:ID!):OrderDto
     getOrdersForUser(userId:ID!):[OrderDto]
-    getProductsForOrder(orderId:ID!):[ProductDto]
+    getProductsForOrder(orderId:ID!):[ProductLineDto]
 
 }
 
 
 type Mutation {
 
-    createUser(user: UserInput!): UserDto!
-    updateUser(user: UpdateUserInput!,userId:ID!): UserDto
+    createUser(user: UserInput!): UserDto
+    updateUser(user: UpdateUserInput!): UserDto
     deleteUser(userId:ID!): String
 
     createProduct(product: NewProductInput!): ProductDto!
-    updateProduct(product: UpdateProductInput!, productId: ID): ProductDto
+    updateProduct(product: UpdateProductInput!): ProductDto
     deleteProduct(productId:ID!): String
 
     createOrder(order: NewOrderInput!): OrderDto
@@ -39,7 +39,7 @@ type LoginResponse{
 
 input UpdateOrderInput{
     orderId:ID!
-    products:[UpdateProductLineInput]!
+    productLines:[UpdateProductLineInput]!
 }
 input UpdateProductLineInput{
     id:ID
@@ -53,6 +53,7 @@ input NewProductInput{
 
 }
 input UpdateProductInput{
+    productId:ID
     name: String
     stock: Int
     price: Float
@@ -73,6 +74,7 @@ input UserInput {
 
 }
 input UpdateUserInput {
+    id:ID!
     name: String
     email: String
     password: String
@@ -101,7 +103,7 @@ input NewProductLineInput{
 }
 type OrderDto{
     id: ID
-    products: [ProductLineDto]
+    productLines: [ProductLineDto]
     user: Int
 }
 
@@ -109,5 +111,6 @@ type ProductLineDto{
     id: ID
     productId: ID
     quantity: Int
+    productName: String
 }
 

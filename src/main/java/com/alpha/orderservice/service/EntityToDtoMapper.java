@@ -29,6 +29,7 @@ public interface EntityToDtoMapper {
     OrderDto entityToDto(Order order);
 
     @Mapping(target = "productId", expression = "java(productLine.getProduct().getId())")
+    @Mapping(target = "productName", expression = "java(productLine.getProduct().getName())")
     ProductLineDto entityToDto(ProductLine productLine);
 
 
@@ -38,7 +39,8 @@ public interface EntityToDtoMapper {
 
     List<UserDto> entityToUserDtoList(List<User> allUsers);
 
-    List<ProductDto> entityToProductDtoList(List<Product> allProducts);
+    List<ProductDto> productEntityToProductDtoList(List<Product> allProducts);
+    List<ProductLineDto> entityToProductLineDtoList(List<ProductLine> productLines);
 
     @Mapping(target = "password", ignore = true)
     void updateFields(@MappingTarget User dbUser, UpdateUserInput updateUser);

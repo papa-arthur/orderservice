@@ -1,0 +1,9 @@
+query {
+    getOrderById(orderId: 1){
+        id,
+        productLines{
+            id,productId,
+            quantity,productName
+        }
+    }
+}

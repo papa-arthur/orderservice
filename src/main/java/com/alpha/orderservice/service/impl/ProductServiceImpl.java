@@ -30,9 +30,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto updateProduct(UpdateProductInput updateNewProductInput, long productId) {
-        Product dbProduct = productRepository.findById(productId).orElseThrow(
-                () -> new ProductNotFoundException(String.format("Update failed! Product with id: %s not found", productId)));
+    public ProductDto updateProduct(UpdateProductInput updateNewProductInput) {
+        Product dbProduct = productRepository.findById(updateNewProductInput.getProductId()).orElseThrow(
+                () -> new ProductNotFoundException(String.format("Update failed! Product with id: %s not found", updateNewProductInput.getProductId())));
         mapper.updateFields(dbProduct, updateNewProductInput);
         return mapper.entityToDto(productRepository.save(dbProduct));
     }
@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAllProducts() {
-        return mapper.entityToProductDtoList(productRepository.findAll());
+        return mapper.productEntityToProductDtoList(productRepository.findAll());
     }
 
     @Override

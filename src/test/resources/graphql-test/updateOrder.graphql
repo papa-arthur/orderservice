@@ -1,0 +1,17 @@
+mutation {
+    updateOrder(order:{
+        orderId: 1
+        productLines:[
+    {
+        productId: 1,
+        quantity: 1,
+        id: 1
+    }
+    ]
+    }){
+        id,productLines{
+            id,quantity, productId, productName
+        }
+    }
+}
+

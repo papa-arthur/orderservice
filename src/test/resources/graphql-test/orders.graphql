@@ -1,0 +1,12 @@
+query {
+    orders{
+        id,
+        productLines{
+            id,productId,
+            quantity,productName
+        }
+    }
+
+
+
+}

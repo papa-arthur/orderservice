@@ -1,0 +1,8 @@
+mutation {
+    login(loginInput: {
+        email: "papa@mail.com"
+        password: "123"
+    }){
+        token
+    }
+}

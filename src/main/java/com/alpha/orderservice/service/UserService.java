@@ -12,7 +12,7 @@ public interface UserService {
     UserDto getUserById(Long userId);
     List<UserDto> getAllUsers();
 
-    UserDto updateUser(UpdateUserInput user, long userId);
+    UserDto updateUser(UpdateUserInput user);
 
     String deleteUser(long userId);
 }

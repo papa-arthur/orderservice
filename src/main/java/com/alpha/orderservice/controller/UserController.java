@@ -9,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -29,8 +27,8 @@ public class UserController {
 
     @MutationMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    UserDto updateUser(@Argument UpdateUserInput user, @Argument(name = "userId") long userId) {
-        return userService.updateUser(user, userId);
+    UserDto updateUser(@Argument UpdateUserInput user) {
+        return userService.updateUser(user);
     }
 
     @MutationMapping
@@ -46,7 +44,7 @@ public class UserController {
     }
 
     @QueryMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     UserDto getUserById(@Argument(name = "id") long userId) {
         return userService.getUserById(userId);
     }

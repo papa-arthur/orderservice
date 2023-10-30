@@ -2,6 +2,7 @@ package com.alpha.orderservice.service;
 
 import com.alpha.orderservice.dto.OrderDto;
 import com.alpha.orderservice.dto.ProductDto;
+import com.alpha.orderservice.dto.ProductLineDto;
 import com.alpha.orderservice.input.NewOrderInput;
 import com.alpha.orderservice.input.UpdateOrderInput;
 
@@ -18,7 +19,7 @@ public interface OrderService {
 
     List<OrderDto> getAllOrders();
 
-    List<ProductDto> getProductsForOrder(long orderId);
+    List<ProductLineDto> getProductsForOrder(long orderId);
 
     OrderDto updateOrder(UpdateOrderInput orderUpdateInput);
 

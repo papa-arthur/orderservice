@@ -2,6 +2,7 @@ package com.alpha.orderservice.controller;
 
 import com.alpha.orderservice.dto.OrderDto;
 import com.alpha.orderservice.dto.ProductDto;
+import com.alpha.orderservice.dto.ProductLineDto;
 import com.alpha.orderservice.input.NewOrderInput;
 import com.alpha.orderservice.input.UpdateOrderInput;
 import com.alpha.orderservice.service.OrderService;
@@ -52,7 +53,7 @@ public class OrderController {
     }
 
     @QueryMapping
-    List<ProductDto> getProductsForOrder(@Argument long orderId) {
+    List<ProductLineDto> getProductsForOrder(@Argument long orderId) {
         System.out.println("Controller called");
         return orderService.getProductsForOrder(orderId);
     }
