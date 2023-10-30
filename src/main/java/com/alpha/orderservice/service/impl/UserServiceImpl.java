@@ -52,9 +52,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UpdateUserInput updateUser, long userId) {
-        User dbUser = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException(String.format("User with id '%d' does not exist", userId))
+    public UserDto updateUser(UpdateUserInput updateUser) {
+        User dbUser = userRepository.findById(updateUser.getId()).orElseThrow(
+                () -> new UserNotFoundException(String.format("User with id '%d' does not exist", updateUser.getId()))
         );
         mapper.updateFields(dbUser, updateUser);
         if (updateUser.getPassword() != null) {

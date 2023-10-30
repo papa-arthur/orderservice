@@ -1,0 +1,12 @@
+    mutation CreateProduct{
+        createProduct(product: {
+            name: "Vintage Coffee Cup"
+            stock: 25
+            price: 126.00
+        }){
+            id,name,
+            price, stock
+        }
+    }
+
+

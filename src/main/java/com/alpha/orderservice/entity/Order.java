@@ -19,7 +19,7 @@ public class Order {
     private Long id;
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
-    private List<ProductLine> products;
+    private List<ProductLine> productLines;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

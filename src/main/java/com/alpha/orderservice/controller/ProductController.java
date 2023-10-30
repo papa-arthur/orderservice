@@ -26,8 +26,8 @@ public class ProductController {
 
     @MutationMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ProductDto updateProduct(@Argument(name = "product") UpdateProductInput updateProductInput, @Argument long productId) {
-        return productService.updateProduct(updateProductInput, productId);
+    ProductDto updateProduct(@Argument(name = "product") UpdateProductInput updateProductInput) {
+        return productService.updateProduct(updateProductInput);
     }
 
     @MutationMapping
@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @QueryMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     ProductDto getProductById(@Argument(name = "id") long productId) {
         return productService.getProductById(productId);
     }

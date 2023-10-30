@@ -1,0 +1,19 @@
+mutation {
+    createOrder(order:{
+        userId: 2
+        productLines:[{
+            productId: 2
+            quantity: 2
+        }]
+    }){
+        id,products{
+            quantity, productId,__typename
+        }
+    }
+}
+
+# ,
+# {
+#   productId: 2
+#   quantity: 5
+# }
