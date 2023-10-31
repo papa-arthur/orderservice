@@ -41,8 +41,6 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(antMatcher("/graphiql/**")).permitAll()
-                        .requestMatchers(antMatcher("/graphql/createUser"), antMatcher("/graphql/login")).permitAll()
                         .anyRequest().permitAll());
 
         http.oauth2ResourceServer((oauth) -> oauth.jwt(Customizer.withDefaults()));

@@ -78,7 +78,7 @@ mutation CreateProduct{
 }
 ```
 ### A sample Image  Showing How to create a product with a using a jwt token for authentication using the included `GraphiQl`
-![A sample image Showing How to create a product](Screenshot from 2023-10-30 13-50-28.png "Sample createProduct mutation")
+![A sample image Showing How to create a product](create-product-request.png "Sample createProduct mutation")
 
 
 ## AUTHORIZATION  RULES
